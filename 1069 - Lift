@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+int order=1;
+int main()
+{
+    int looper,sum,till_my_floor;
+    cin>>looper;
+    while(looper--){
+        int my_pos,lift_pos;
+        cin>>my_pos>>lift_pos;
+        int diff=abs(my_pos-lift_pos);
+        till_my_floor=diff*4;
+        cout<<"Case "<<order<<": "<<19+till_my_floor+my_pos*4<<endl;
+        order+=1;
+    }
+    return 0;
+}
+ 
