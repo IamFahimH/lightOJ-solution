@@ -1,0 +1,31 @@
+#include <iostream>
+#include<math.h>
+#include <vector>
+using namespace std;
+int a=0,b=1;
+int main()
+{
+    int num,p,q,looper;
+    cin>>looper;
+    //vector <int> vec;
+    int box[100];
+    while(looper--){
+        int count=0,weight=0;
+        cin>>num>>p>>q; // input of n,p,q
+        for(int i=0;i<num;i++){
+            /*int input;
+            cin>>input;
+            vec.push_back(input);*/
+            cin>>box[i];
+        }
+        for(int i=0;i<num;i++){
+            if(count+1<=p && weight+box[i]<=q){
+                count++;
+                weight+=box[i];
+            }   //3 2 10 1 2 3
+        }       //4 5 5 4 4 5 5
+        cout<<"Case "<<b<<": "<<count<<endl;
+        b++;
+    }
+    return 0;
+}
