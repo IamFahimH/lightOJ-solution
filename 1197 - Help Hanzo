@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#define MX 47000
+#define ll long long int
+using namespace std;
+vector <ll> primes;
+void sieve(){
+    bool isPrime[MX];
+    for(ll i=0; i<MX; i++)isPrime[i] = true;
+    isPrime[0] = isPrime[1]= false;
+
+    for(ll i=3; i*i<=MX; i+=2){
+        if(isPrime[i]){
+            for(ll j=i*i; j<=MX; j+=i){
+                isPrime[j]=false;
+            }
+        }
+    }
+    primes.push_back(2);
+    for(ll i=3; i<=MX; i+=2)if(isPrime[i])primes.push_back(i);
+}
+int segSieve(int l,int r){
+    bool isPrime[r-l+1];
+    for(ll i=0; i<r-l+1; i++)isPrime[i]=true;
+    if(l==1)isPrime[0]=false;
+    for(ll i=0; primes[i]*primes[i]<=r; i++){
+        ll current_prime = primes[i];
+        ll base = ((l+current_prime-1)/current_prime)*current_prime;
+        for(ll j=base; j<=r; j+=current_prime){
+            isPrime[j-l] = false;
+        }
+        if(base == current_prime)isPrime[base-l]=true;
+    }
+    int cnt = 0;
+    for(ll i=0; i<r-l+1; i++){
+        if(isPrime[i]){
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+
+int main()
+{
+    sieve();
+    ll t; cin>>t;
+    ll indx = 1;
+    while(t--){
+        ll a,b;
+        cin>>a>>b;
+        cout<<"Case "<<indx<<": "<<segSieve(a,b)<<endl;
+        indx++;
+    }
+    return 0;
+}
