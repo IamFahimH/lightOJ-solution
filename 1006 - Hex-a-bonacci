@@ -1,0 +1,18 @@
+#include <iostream>
+typedef long long int ll;
+using namespace std;
+int main()
+{
+	ll fn[10005],n,t;
+	ll test = 0;
+
+	cin>>t;
+	while(t--){
+        cin>>fn[0]>>fn[1]>>fn[2]>>fn[3]>>fn[4]>>fn[5]>>n;
+        for(int i=6; i<=n; i++){
+            fn[i] = ((fn[i-1] + fn[i-2] + fn[i-3] + fn[i-4] + fn[i-5] + fn[i-6]) % 10000007);
+        }
+        cout<<"Case "<< ++test <<": "<<fn[n]%10000007<<endl;
+	}
+	return 0;
+}
