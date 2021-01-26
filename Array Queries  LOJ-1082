@@ -1,0 +1,56 @@
+//https://lightoj.com/problem/array-queries
+
+#include <bits/stdc++.h>
+#define mx 100005
+typedef long long int ll;
+using namespace std;
+ll arr[mx];
+ll tree[mx*3];
+
+void init(int node, int b, int e){
+    if(b == e){
+        tree[node] = arr[b];
+        return;
+    }
+    else{
+        int Left = node*2;
+        int Right = (node*2)+1;
+        int mid = (b + e)>>1;
+
+        init(Left, b, mid);
+        init(Right, mid+1, e);
+
+        tree[node] = min(tree[Left], tree[Right]);
+    }
+}
+
+
+int minQuery(int node, int b, int e, int i, int j){
+    if(i>e || j<b)return INT_MAX;
+    if(b>=i && e<=j)return tree[node];
+
+    int Left = node*2;
+    int Right = (node*2)+1;
+    int mid = (b + e)>>1;
+
+    int data1 = minQuery(Left, b, mid, i, j);
+    int data2 = minQuery(Right, mid+1, e, i, j);
+    return min(data1, data2);
+}
+
+int main(){
+    int tc; cin>>tc;
+    for(int i=1; i<=tc; i++){
+        ll n,q; cin>>n>>q;
+        for(int j=1; j<=n; j++)cin>>arr[j];
+
+        init(1,1,n);
+        cout<<"Case "<<i<<":"<<endl;
+        while(q--){
+            ll s,f; cin>>s>>f;
+            cout<<minQuery(1,1,n,s,f)<<endl;
+        }
+
+    }
+    return 0;
+}
