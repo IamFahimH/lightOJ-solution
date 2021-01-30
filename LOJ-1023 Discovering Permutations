@@ -1,0 +1,25 @@
+//https://lightoj.com/problem/discovering-permutations
+#include <bits/stdc++.h>
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+typedef long long ll;
+using namespace std;
+
+int main(){
+    optimize();
+    int tc; cin>>tc;
+    string strr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for(int i=1; i<=tc; i++){
+        int n,k; cin>>n>>k;
+        string str = strr.substr(0,n);
+        int cnt = 0;
+        cout<<"Case "<<i<<":"<<endl;
+        do{
+            cout<<str<<endl;
+            ++cnt;
+            if(cnt == k)break;
+        } while(next_permutation(str.begin(),str.end()));
+    }
+
+
+    return 0;
+}
