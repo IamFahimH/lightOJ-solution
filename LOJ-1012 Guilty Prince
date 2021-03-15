@@ -1,0 +1,61 @@
+//https://lightoj.com/problem/guilty-prince
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define endl '\n'
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+#define MOD 1e9+7
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+typedef long long int ll;
+typedef tree< ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update > ordered_set;
+/// cout<<*X.find_by_order(1)<<endl; // finds the kth element
+/// cout<<X.order_of_key(-5)<<endl;  // number of items in a set that are strictly smaller than our item
+
+const int mx = 25;
+int cnt = 0, m, n;
+char c[mx][mx];
+int dx[] = {+1, -1, 0, 0};
+int dy[] = {0, 0, -1, +1};
+bool vis[mx][mx];
+
+void DFS(int x, int y){
+    vis[x][y] = 1;
+    cnt++;
+
+    for(int i=0; i<4; i++){
+        int x1 = x + dx[i];
+        int y1 = y + dy[i];
+
+        if(x1 >= 1 && x1 <= n && y1 >= 1 && y1 <= m && c[x1][y1] == '.' && vis[x1][y1] == 0){
+            DFS(x1,y1);
+        }
+    }
+}
+
+
+int main(){
+    optimize();
+
+    int tc; cin>>tc;
+    for(int t=1; t<=tc; t++){
+        memset(vis, 0, sizeof(vis));
+        cnt = 0;
+
+        cin>>m>>n;
+        int x,y;
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=m; j++){
+                cin>>c[i][j];
+                if(c[i][j] == '@'){
+                    x = i, y = j;
+                }
+            }
+        }
+        DFS(x,y);
+        cout<<"Case "<<t<<": "<<cnt<<endl;
+    }
+    return 0;
+}
