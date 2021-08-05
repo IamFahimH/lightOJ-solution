@@ -1,0 +1,136 @@
+//https://lightoj.com/problem/jane-and-the-frost-giants
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define endl '\n'
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#define fraction() cout.unsetf(ios::floatfield); cout.precision(10); cout.setf(ios::fixed,ios::floatfield);
+#define MOD 1e9+7
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+typedef long long int ll;
+typedef tree< ll, null_type, less_equal<ll>, rb_tree_tag, tree_order_statistics_node_update > ordered_set;
+/// cout<<*X.find_by_order(1)<<endl; // finds the kth element
+/// cout<<X.order_of_key(-5)<<endl;  // number of items in a set that are strictly smaller than our item
+
+int dx[] = {0, 0, +1, -1, +1, +1, -1, -1};
+int dy[] = {+1, -1, 0, 0, +1, -1, +1, -1};
+
+const int mx = 205;
+char c[mx][mx];
+int fireLevel[mx][mx], janeLevel[mx][mx];
+vector <pair<int, int>> v;
+int n,m;
+
+void BFS(){
+    memset(fireLevel, -1, sizeof(fireLevel));
+
+    queue <pair<int, int>> q;
+    for(auto u : v){
+        q.push(u);
+        fireLevel[u.first][u.second] = 0;
+    }
+
+    while(!q.empty()){
+
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+
+        for(int i=0; i<4; i++){
+            int x1 = x + dx[i];
+            int y1 = y + dy[i];
+
+            if((x1 >= 1 && x1 <= n) && (y1 >= 1 && y1 <= m) && c[x1][y1] != '#' && fireLevel[x1][y1] == -1){
+                fireLevel[x1][y1] = fireLevel[x][y] + 1;
+                q.push({x1,y1});
+
+            }
+        }
+    }
+
+}
+
+void BFS_Jane(int x, int y){
+    memset(janeLevel, -1, sizeof(fireLevel));
+
+    queue <pair<int, int>> q;
+    q.push({x,y});
+    janeLevel[x][y] = 0;
+
+    while(!q.empty()){
+
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+
+        for(int i=0; i<4; i++){
+            int x1 = x + dx[i];
+            int y1 = y + dy[i];
+
+            if((x1 >= 1 && x1 <= n) && (y1 >= 1 && y1 <= m) && c[x1][y1] != '#'
+               && janeLevel[x1][y1] == -1 && (janeLevel[x][y]+1 < fireLevel[x1][y1])){
+
+                janeLevel[x1][y1] = janeLevel[x][y] + 1;
+                q.push({x1,y1});
+
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    optimize();
+
+    int t; cin>>t;
+    for(int tc=1; tc<=t; tc++){
+
+        cin>>n>>m;
+        int x,y;
+        v.clear();
+
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=m; j++){
+                cin>>c[i][j];
+
+                if(c[i][j] == 'J'){
+                    x = i, y = j;
+                }
+                else if(c[i][j] == 'F'){
+                    v.push_back({i,j});
+                }
+            }
+        }
+
+        BFS();
+        BFS_Jane(x,y);
+
+        int ans = INT_MAX;
+
+        for ( int i = 1; i <= n; i++ ) {
+            if ( janeLevel[i][1] != -1 ) ans = min ( ans, janeLevel[i][1] );
+        }
+
+        for ( int i = 1; i <= n; i++ ) {
+            if ( janeLevel[i][m] != -1 ) ans = min ( ans, janeLevel[i][m] );
+        }
+
+        for ( int i = 1; i <= m; i++ ) {
+            if ( janeLevel[1][i] != -1 ) ans = min ( ans, janeLevel[1][i] );
+        }
+
+        for ( int i = 1; i <= m; i++ ) {
+            if ( janeLevel[n][i] != -1 ) ans = min ( ans, janeLevel[n][i] );
+        }
+
+        if ( ans == INT_MAX ) cout << "Case " << tc << ": IMPOSSIBLE" << endl;
+        else cout << "Case " << tc << ": " << ans + 1 << endl;
+    }
+
+    return 0;
+}
